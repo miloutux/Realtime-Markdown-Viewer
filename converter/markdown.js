@@ -22,6 +22,17 @@ var parseBold = function(str) {
   var stra = [];
   while ((stra = boldRegExp.exec(str)) !== null) {
     str = str.replace(stra[0], '<b>' + stra[2] + '</b>')
+}
+  return str;
+ }
+
+
+
+ var parseCode = function(str) {
+  var codeRegExp = /```(.*?)```/;
+  var stra = [];
+  while ((stra = codeRegExp.exec(str)) !== null) {
+    str = str.replace(stra[0], '<code>' + stra[1] + '</code>');
   }
   return str;
  }
@@ -34,7 +45,6 @@ var parseStrong = function(str) {
   }
   return str;
 }
-
 
  var parseHorizontaleLine = function(str) {
   var horizontalRegExp = /^(?:([\*\-_] ?)+)\1\1$/gm;
@@ -64,15 +74,6 @@ var parseNewLine = function(str) {
   return str;
  }
 
- var parseCode = function(str) {
-  var codeRegExp = /`{1}(\w+)`{1}/;
-  var stra = [];
-  while ((stra = codeRegExp.exec(str)) !== null) {
-    str = str.replace(stra[0], '<pre>' + stra[1] + '</pre>');
-  }
-  return str;
- }
-
  var parseBlockQuote = function(str) {
   var quoteRegExp = /\:\"(.*?)\"\:/
   var stra = [];
@@ -91,6 +92,7 @@ var parseNewLine = function(str) {
   return str;
  }
 
+ 
 var markdown = {
   parse: function (str, strict) {
     'use strict';
@@ -104,6 +106,8 @@ var markdown = {
     str = parseCode(str);
     str = parseBlockQuote(str);
     str = parseDel(str);
+    str = parseCode(str);
+    str = parseHorizontaleLine(str);
     return str;
   }
 };
